@@ -46,7 +46,9 @@ export default createStore({
       commit('addToBag', product);
     },
     removeFromBag({ commit }, productId) {
-      commit('removeFromBag', productId);
+      if (confirm('Are you sure you want to remove this item from your bag?')) {
+        commit('removeFromBag', productId);
+      }
     },
   },
   // The modules are used to split the store into multiple files
