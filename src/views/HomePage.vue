@@ -9,10 +9,10 @@
         <div class="product-image" :style="{backgroundImage: 'url(' + product.image +  ')'}"></div>
         <h4>{{ product.title }}</h4>
         <p class="price">US$ {{ product.price.toFixed(2) }}</p>
-        <button @click="addToBag(product)">Add to bag</button>
+        <button v-if="!isInBag(product)" @click="addToBag(product)">Add to bag</button>
+        <button v-else class="remove">Remove from bag</button>
       </div>
     </div>
-    {{ productsInBag.length }}
   </div>
 </template>
 
@@ -39,6 +39,12 @@ export default {
     product.quantity = 1;
     // This gets sent to the action
     this.$store.dispatch('addToBag', product);
+   },
+   isInBag(product) {
+    // We will need to find the value in the object of id
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
+    // We are comparing the values and if it returns true we don't want to display the button
+    return this.productsInBag.find(item => item.id === product.id);
    }
   }
 }
