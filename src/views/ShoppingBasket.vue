@@ -1,42 +1,64 @@
 <template>
   <div class="basket">
     <div class="items">
-
-      <div class="item">
-        <div class="remove">Remove item</div>
-        <div class="photo"><img src="https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg" alt=""></div>
-        <div class="description">Mens Casual Premium Slim Fit T-Shirts </div>
-        <div class="price">
-          <span class="quantity-area">
-            <button disabled="">-</button>
-            <span class="quantity">1</span>
-            <button>+</button>
-          </span>
-          <span class="amount">US$ 22.30</span>
+      <template v-if="productsInBag.length">
+        <div
+          v-for="(product, index) in productsInBag"
+          :key="index"
+          class="item"
+        >
+          <div
+            class="remove"
+            @click="this.$store.dispatch('removeFromBag', product.id)"
+          >
+            Remove item
+          </div>
+          <div class="photo">
+            <img
+              :src="product.image"
+              alt=""
+            />
+          </div>
+          <div class="description">{{ product.title }}</div>
+          <div class="price">
+            <span class="quantity-area">
+              <button
+                :disabled="product.quantity <= 1"
+                @click="product.quantity--"
+              >
+                -
+              </button>
+              <span class="quantity">{{ product.quantity }}</span>
+              <button @click="product.quantity++">+</button>
+            </span>
+            <span class="amount"
+              >US$ {{ (product.price * product.quantity).toFixed(2) }}</span
+            >
+          </div>
         </div>
-      </div>
-      <div class="grand-total"> Grand Total: US$ 22.30</div>
-
+        <div class="grand-total">Grand Total: US$ 22.30</div>
+      </template>
+      <template v-else>
+        <h4>No items in bag yet</h4>
+      </template>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 
 export default {
   name: 'ShoppingBasket',
 
-  methods: {
-   
-  },
- 
-}
+  methods: {},
+  computed: mapState(['productsInBag']),
+};
 </script>
 
 <style lang="scss">
-
 .basket {
-  padding: 60px 0;  
+  padding: 60px 0;
   .items {
     max-width: 800px;
     margin: auto;
@@ -70,8 +92,7 @@ export default {
         }
 
         .quantity {
-
-            margin: 0 4px;
+          margin: 0 4px;
         }
       }
 
@@ -85,7 +106,6 @@ export default {
         padding-left: 30px;
         box-sizing: border-box;
         max-width: 50%;
-
       }
 
       .price {
@@ -93,19 +113,15 @@ export default {
           font-size: 16px;
           margin-left: 8px;
           vertical-align: middle;
-
         }
       }
     }
-      .grand-total {
-          font-size: 24px;
-          font-weight: bold;
-          text-align: right;
-          margin-top: 8px;
-      }
-
+    .grand-total {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: right;
+      margin-top: 8px;
+    }
   }
-
 }
-
 </style>
