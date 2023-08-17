@@ -16,10 +16,18 @@ export default createStore({
       console.log(products);
       state.products = products;
     },
+    loadBag(state, products) {
+      // Here we would update the state
+      state.productsInBag = products;
+    },
     addToBag(state, product) {
       // Here we would update the state
       console.log(product);
       state.productsInBag.push(product);
+      localStorage.setItem(
+        'productsInBag',
+        JSON.stringify(state.productsInBag)
+      );
     },
     removeFromBag(state, productId) {
       // Here we would update the state by filtering the productsInBag array
@@ -27,6 +35,10 @@ export default createStore({
         (item) => productId != item.id
       );
       state.productsInBag = updatedBag;
+      localStorage.setItem(
+        'productsInBag',
+        JSON.stringify(state.productsInBag)
+      );
     },
   },
   // The actions are the functions that are used to change the state
@@ -38,6 +50,12 @@ export default createStore({
       axios.get('https://fakestoreapi.com/products').then((response) => {
         commit('loadProducts', response.data);
       });
+    },
+    loadBag({ commit }) {
+      // We will load the values from local storage if a bag exists when the app loads in a different page
+      if (localStorage.getItem('productsInBag')) {
+        commit('loadBag', JSON.parse(localStorage.getItem('productsInBag')));
+      }
     },
     addToBag({ commit }, product) {
       // Here we would call the API to add the product to the bag

@@ -14,6 +14,7 @@ export default {
     // We need to call an action
     //  https://vuex.vuejs.org/guide/actions.html
     this.$store.dispatch('loadProducts');
+    this.$store.dispatch('loadBag');
   },
   computed: mapState([
     'productsInBag',
