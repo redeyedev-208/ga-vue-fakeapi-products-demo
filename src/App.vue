@@ -1,26 +1,25 @@
 <template>
   <div id="nav">
     <router-link to="/">Home</router-link> -
-    <router-link to="/basket">Shopping Bag (0)</router-link> 
+    <router-link to="/basket">Shopping Bag ({{ this.productsInBag.length }})</router-link>
   </div>
-  <router-view/>
+  <router-view />
 </template>
 
 <script>
-// import store from './store';
-
-
-
-  export default {
-    created() {
-     // We need to call an action 
+export default {
+  created() {
+    // We need to call an action
     //  https://vuex.vuejs.org/guide/actions.html
-    this.$store.dispatch('loadProducts')
-    }
-  }
-  
+    this.$store.dispatch('loadProducts');
+  },
+  computed: {
+    productsInBag() {
+      return this.$store.state.productsInBag;
+    },
+  },
+};
 </script>
-
 
 <style lang="scss">
 #app {
@@ -43,7 +42,6 @@
   text-align: center;
   background-color: rgb(37, 37, 37);
   color: white;
-
 
   a {
     color: white;
