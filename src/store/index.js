@@ -21,6 +21,13 @@ export default createStore({
       console.log(product);
       state.productsInBag.push(product);
     },
+    removeFromBag(state, productId) {
+      // Here we would update the state by filtering the productsInBag array
+      var updatedBag = state.productsInBag.filter(
+        (item) => productId != item.id
+      );
+      state.productsInBag = updatedBag;
+    },
   },
   // The actions are the functions that are used to change the state
   actions: {
@@ -37,6 +44,9 @@ export default createStore({
       // and then we would call the mutation to update the state
       // we are using the action to call the mutation
       commit('addToBag', product);
+    },
+    removeFromBag({ commit }, productId) {
+      commit('removeFromBag', productId);
     },
   },
   // The modules are used to split the store into multiple files
